@@ -12,7 +12,10 @@ export const signup = createAsyncThunk(
     async (user) => {
         const response = await axios.post(api_url, user);
         const auth_token = response.headers.authorization;
-        localStorage.setItem('auth_token', auth_token);
+        if (auth_token) {
+            localStorage.setItem('auth_token', auth_token);
+        }
+        // localStorage.setItem('auth_token', auth_token);
         console.log(auth_token);
 
         return response.data;
@@ -56,7 +59,7 @@ export const fetchUser = createAsyncThunk(
                 'Authorization': auth_token
             }
         });
-
+        console.log(response.data);
         return response.data;
     }
 )
