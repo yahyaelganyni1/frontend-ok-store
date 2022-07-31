@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { signup } from './authenticationSlice';
+import { Navigate } from 'react-router-dom';
 
 const Signup = () => {
   const [email, setEmail] = useState('');
