@@ -1,5 +1,5 @@
 import React from 'react';
-
+import Signup from './features/authentication/Signup';
 import './App.css';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -9,6 +9,7 @@ function App() {
   return (
     <div className="App">
       <h1>Hello World</h1>
+      <Signup />
     </div>
   );
 }
