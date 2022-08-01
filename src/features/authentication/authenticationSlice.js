@@ -3,6 +3,7 @@ import axios from 'axios';
 
 const initialState = {
     user: null,
+
 }
 
 const api_url = 'http://localhost:3000/users';
@@ -61,6 +62,16 @@ export const fetchUser = createAsyncThunk(
         });
         console.log(response.data);
         return response.data;
+    }
+)
+
+export const isLoggedIn = createAsyncThunk(
+    'authentication/isLoggedIn',
+    async () => {
+        const response = await axios.get(singleUserApi);
+        const isLoggedIn = response.data.logged_in;
+        console.log(isLoggedIn);
+        return response.data.logged_in
     }
 )
 
