@@ -8,9 +8,11 @@ const Header = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.authentication);
   useEffect(() => {
-    dispatch(fetchUser());
+    if (!user.user === null) {
+      dispatch(fetchUser());
+    }
   }, [dispatch]);
-  console.log(user);
+  // console.log(user);
   return (
     <header>
       <nav>
