@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchProducts } from './productsSlice';
+import './products.scss';
 
 const Products = () => {
   const products = useSelector((state) => state.products.products);
@@ -12,11 +13,13 @@ const Products = () => {
     dispatch(fetchProducts());
   }, []);
 
-  console.log(products);
+  if (products.length === 0) {
+    return <h3>theres no products</h3>;
+  }
 
   return (
-    <div>
-      <h1>Products</h1>
+    <div className="products">
+      <h3>Products</h3>
       {productsLoading ? (
         <p>Loading...</p>
       ) : (

@@ -3,18 +3,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom';
 import LogOut from '../../features/authentication/LogOut';
 import { fetchUser } from '../../features/authentication/authenticationSlice';
+import './header.scss';
 
 const Header = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.authentication);
+  const user = useSelector((state) => state.authentication.user);
+  // const loggedIn = useSelector((state) => state.authentication.user.logged_in);
+
   useEffect(() => {
-    if (!user.user === null) {
-      dispatch(fetchUser());
-    }
+    // if (user) {
+    dispatch(fetchUser());
+    // }
   }, [dispatch]);
-  // console.log(user);
+
+  console.log(user);
+
   return (
-    <header>
+    <header className="header">
       <nav>
         <ul>
           <li>
@@ -27,7 +32,7 @@ const Header = () => {
             <Link to="/contact">Contact</Link>
           </li>
 
-          {user.user === null ? (
+          {!user ? (
             <div>
               <li>
                 <Link to="/login">Login</Link>
@@ -37,7 +42,10 @@ const Header = () => {
               </li>
             </div>
           ) : (
-            <LogOut />
+            <div>
+              <LogOut />
+              <h5 className="username"> welcome {user.user.username}</h5>
+            </div>
           )}
         </ul>
       </nav>

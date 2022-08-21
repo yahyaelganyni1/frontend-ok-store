@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { signup } from './authenticationSlice';
 import { Navigate } from 'react-router-dom';
+import './signup.scss';
 
 const Signup = () => {
   const [email, setEmail] = useState('');
@@ -9,7 +10,9 @@ const Signup = () => {
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [username, setUsername] = useState('');
   const [loading, setLoading] = useState(false);
+
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.authentication.user);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -26,10 +29,19 @@ const Signup = () => {
     ).then(() => {
       setLoading(false);
     });
+
+    setEmail('');
+    setPassword('');
+    setPasswordConfirmation('');
+    setUsername('');
   };
 
+  if (user) {
+    return <Navigate to="/" />;
+  }
+
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="signup-form">
       <h1>sign up</h1>
       <input
         type="text"

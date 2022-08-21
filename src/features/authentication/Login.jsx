@@ -1,22 +1,31 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { login } from './authenticationSlice';
+import { isLoggedIn } from './authenticationSlice';
 import { Navigate } from 'react-router-dom';
+import './login.scss';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.authentication.user);
+  // const loggedIn = useSelector((state) => state.authentication.isLoggedIn);
   const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
-    dispatch(login({ user: { email, password } })).then(() => {
-      setLoading(false);
-    });
+    dispatch(login({ user: { email, password } }));
+
+    setEmail('');
+    setPassword('');
   };
+
+  if (user) {
+    return <Navigate to="/" />;
+  }
+
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="login-form">
       <h1>login</h1>
       <input
         type="text"

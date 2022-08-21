@@ -3,8 +3,12 @@ import axios from 'axios';
 
 const initialState = {
     user: null,
+    // isLoggedIn: false,
+    isLoading: false,
+    error: null,
+};
 
-}
+
 
 const api_url = 'http://localhost:3000/users';
 
@@ -65,15 +69,6 @@ export const fetchUser = createAsyncThunk(
     }
 )
 
-export const isLoggedIn = createAsyncThunk(
-    'authentication/isLoggedIn',
-    async () => {
-        const response = await axios.get(singleUserApi);
-        const isLoggedIn = response.data.logged_in;
-        console.log(isLoggedIn);
-        return response.data.logged_in
-    }
-)
 
 const authenticationSlice = createSlice({
     name: 'authentication',
@@ -81,6 +76,7 @@ const authenticationSlice = createSlice({
     reducers: {
         setUser: (state, action) => {
             state.user = action.payload;
+            // state.isLoggedIn = true;
         }
     },
     extraReducers: {
@@ -90,6 +86,7 @@ const authenticationSlice = createSlice({
         [signup.fulfilled]: (state, action) => {
             state.status = 'idle';
             state.user = action.payload;
+            // state.isLoggedIn = action.payload.logged_in;
         },
         [login.pending]: (state, action) => {
             state.status = 'loading';
@@ -97,6 +94,7 @@ const authenticationSlice = createSlice({
         [login.fulfilled]: (state, action) => {
             state.status = 'idle';
             state.user = action.payload;
+            // state.isLoggedIn = action.payload.logged_in;
         },
         [logout.pending]: (state, action) => {
             state.status = 'loading';
@@ -104,6 +102,7 @@ const authenticationSlice = createSlice({
         [logout.fulfilled]: (state, action) => {
             state.status = 'idle';
             state.user = null;
+            // state.isLoggedIn = action.payload;
         },
         [fetchUser.pending]: (state, action) => {
             state.status = 'loading';
@@ -111,6 +110,7 @@ const authenticationSlice = createSlice({
         [fetchUser.fulfilled]: (state, action) => {
             state.status = 'idle';
             state.user = action.payload;
+            // state.isLoggedIn = action.payload.logged_in;
         }
     }
 },
