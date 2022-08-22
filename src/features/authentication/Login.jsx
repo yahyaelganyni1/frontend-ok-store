@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from './authenticationSlice';
-import { isLoggedIn } from './authenticationSlice';
 import { Navigate } from 'react-router-dom';
 import './login.scss';
 
@@ -11,7 +10,6 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.authentication.user);
-  // const loggedIn = useSelector((state) => state.authentication.isLoggedIn);
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(login({ user: { email, password } }));

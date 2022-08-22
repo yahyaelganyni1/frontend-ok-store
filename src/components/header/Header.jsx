@@ -16,7 +16,7 @@ const Header = () => {
     // }
   }, [dispatch]);
 
-  console.log(user);
+  // console.log(user.user.role);
 
   return (
     <header className="header">
@@ -45,6 +45,14 @@ const Header = () => {
             <div>
               <LogOut />
               <h5 className="username"> welcome {user.user.username}</h5>
+
+              {user.user.role === 'admin' || user.user.role === 'seller' ? (
+                <li>
+                  <Link to="/add-products">Add Product</Link>
+                </li>
+              ) : (
+                <h5>you are a user</h5>
+              )}
             </div>
           )}
         </ul>

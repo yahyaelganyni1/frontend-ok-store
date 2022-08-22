@@ -23,9 +23,12 @@ export const fetchProducts = createAsyncThunk(
 export const postProduct = createAsyncThunk(
     'products/postProduct',
     async (product) => {
+        const token = localStorage.getItem('auth_token');
         const response = await axios.post(url, product, {
+
             headers: {
-                'Authorization': localStorage.getItem('auth_token')
+                'Authorization': token,
+                'Content-Type': 'application/json'
             }
         });
         return response.data;
@@ -83,6 +86,7 @@ const productsSlice = createSlice({
         },
         [postProduct.pending]: (state, action) => {
             state.loading = true;
+
         },
         [postProduct.fulfilled]: (state, action) => {
             state.loading = false;
@@ -105,7 +109,7 @@ const productsSlice = createSlice({
     }
 })
 
-export const { setProducts } = productsSlice.actions;
+// export const { setProducts } = productsSlice.actions;
 
 export default productsSlice.reducer;
 
