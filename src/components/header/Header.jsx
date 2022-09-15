@@ -49,6 +49,9 @@ const Header = () => {
               {user.user.role === 'admin' || user.user.role === 'seller' ? (
                 <li>
                   <Link to="/add-products">Add Product</Link>
+                  {user.user.role === 'admin' ? (
+                    <Link to="/all-users">All Users </Link>
+                  ) : null}
                 </li>
               ) : (
                 <h5>you are a user</h5>

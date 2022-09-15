@@ -3,9 +3,9 @@ import axios from 'axios';
 
 const initialState = {
     user: null,
-    // isLoggedIn: false,
     isLoading: false,
     error: null,
+    allUsers: [],
 };
 
 
@@ -64,10 +64,56 @@ export const fetchUser = createAsyncThunk(
                 'Authorization': auth_token
             }
         });
-        console.log(response.data);
         return response.data;
     }
 )
+
+
+const allUsersApi = 'http://localhost:3000/all-users';
+export const getAllUsers = createAsyncThunk(
+    'authentication/getAllUsers',
+    async () => {
+        const auth_token = localStorage.getItem('auth_token');
+        const response = await axios.get(allUsersApi, {
+            headers: {
+                'Authorization': auth_token
+            }
+        });
+        return response.data;
+    }
+)
+
+const updateUserApi = 'http://localhost:3000/update-user-to-seller'
+
+export const upgradeUserToSeller = createAsyncThunk(
+    'authentication/upgradeUserToSeller',
+    async (user) => {
+        const auth_token = localStorage.getItem('auth_token');
+        const response = await axios.get(`${updateUserApi}/${user.id}`, {
+            headers: {
+                'Authorization': auth_token
+            }
+        });
+        return response.data;
+    }
+)
+
+const updateSellerApi = 'http://localhost:3000/update-seller-to-user'
+
+export const downgradeSellerToUser = createAsyncThunk(
+    'authentication/downgradeSellerToUser',
+    async (user) => {
+        const auth_token = localStorage.getItem('auth_token');
+        const response = await axios.get(`${updateSellerApi}/${user.id}`, {
+            headers: {
+                'Authorization': auth_token
+            }
+        });
+        return response.data;
+    }
+)
+
+
 
 
 const authenticationSlice = createSlice({
@@ -111,6 +157,13 @@ const authenticationSlice = createSlice({
             state.status = 'idle';
             state.user = action.payload;
             // state.isLoggedIn = action.payload.logged_in;
+        },
+        [getAllUsers.pending]: (state, action) => {
+            state.status = 'loading';
+        },
+        [getAllUsers.fulfilled]: (state, action) => {
+            state.status = 'idle';
+            state.allUsers = action.payload;
         }
     }
 },

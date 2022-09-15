@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { postProduct } from './productsSlice';
+import { useNavigate } from 'react-router-dom';
 
 const AddProducts = () => {
   const dispatch = useDispatch();
@@ -10,17 +11,25 @@ const AddProducts = () => {
   const [name, setName] = React.useState('');
   const [price, setPrice] = React.useState();
   const [quantity, setQuantity] = React.useState();
+  const [image, setImage] = React.useState(null);
+  const navigate = useNavigate();
 
   const userId = user.user.id;
 
   const addProduct = (e) => {
     e.preventDefault();
-    dispatch(
-      postProduct({ product: { name, price, quantity, user_id: userId } }),
-    );
+    const formData = new FormData();
+    formData.append('product[name]', name);
+    formData.append('product[price]', price);
+    formData.append('product[quantity]', quantity);
+    formData.append('product[user_id]', userId);
+    formData.append('product[image]', image);
+    dispatch(postProduct(formData));
     setName('');
     setPrice('');
     setQuantity('');
+    setImage(null);
+    navigate('/');
   };
 
   if (!user) {
@@ -50,6 +59,12 @@ const AddProducts = () => {
         placeholder="Quantity"
         value={quantity}
         onChange={(e) => setQuantity(e.target.value)}
+        required
+      />
+
+      <input
+        type="file"
+        onChange={(e) => setImage(e.target.files[0])}
         required
       />
 

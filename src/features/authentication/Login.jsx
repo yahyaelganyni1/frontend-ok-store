@@ -1,26 +1,24 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from './authenticationSlice';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './login.scss';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.authentication.user);
+  // const user = useSelector((state) => state.authentication.user);
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(login({ user: { email, password } }));
 
     setEmail('');
     setPassword('');
+    navigate('/');
   };
-
-  if (user) {
-    return <Navigate to="/" />;
-  }
 
   return (
     <form onSubmit={handleSubmit} className="login-form">

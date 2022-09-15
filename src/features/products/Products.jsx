@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchProducts } from './productsSlice';
+import { Link } from 'react-router-dom';
 import './products.scss';
 
 const Products = () => {
@@ -26,9 +27,11 @@ const Products = () => {
         <ul>
           {products.map((product) => (
             <li key={product.id}>
-              <h4> {product.name} </h4>
-              <p> {product.price} </p>
-              <p>{product.quantity}</p>
+              <Link to={`/products/${product.id}`}>
+                <img src={product.image_path} alt={product.name} width="300" />
+                <h4> {product.name} </h4>
+                <p> {product.price} </p>
+              </Link>
             </li>
           ))}
         </ul>

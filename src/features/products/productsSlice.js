@@ -30,7 +30,10 @@ export const postProduct = createAsyncThunk(
                 'Authorization': token,
                 'Content-Type': 'application/json'
             }
+        }).catch((error) => {
+            console.log(error);
         });
+
         return response.data;
     }
 )
@@ -60,13 +63,15 @@ export const updateProduct = createAsyncThunk(
     }
 )
 
-export const fetchProduct = createAsyncThunk(
-    'products/fetchProduct',
+export const fetchSingleProduct = createAsyncThunk(
+    'products/fetchSingleProduct',
     async (id) => {
-        const response = await axios.get(`${url}/${id}`)
+        const response = await axios.get(`${url}/${id}`);
         return response.data;
     }
 )
+
+
 
 const productsSlice = createSlice({
     name: 'products',
@@ -84,6 +89,24 @@ const productsSlice = createSlice({
             state.loading = false;
             state.products = action.payload;
         },
+        [fetchProducts.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+        [fetchSingleProduct.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [fetchSingleProduct.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.product = action.payload;
+        },
+        [fetchSingleProduct.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+
         [postProduct.pending]: (state, action) => {
             state.loading = true;
 
