@@ -10,7 +10,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const user = useSelector((state) => state.authentication.user);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(login({ user: { email, password } }));

@@ -10,9 +10,6 @@ const AllUsers = () => {
   const users = useSelector((state) => state.authentication.allUsers);
 
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getAllUsers());
-  }, []);
 
   const upgradeUser = (user) => {
     dispatch(upgradeUserToSeller(user));
@@ -23,6 +20,10 @@ const AllUsers = () => {
     dispatch(downgradeSellerToUser(user));
     window.location.reload();
   };
+
+  useEffect(() => {
+    dispatch(getAllUsers());
+  }, []);
 
   return (
     <div>

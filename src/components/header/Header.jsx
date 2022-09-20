@@ -2,21 +2,16 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom';
 import LogOut from '../../features/authentication/LogOut';
+import { login } from '../../features/authentication/authenticationSlice';
 import { fetchUser } from '../../features/authentication/authenticationSlice';
 import './header.scss';
 
 const Header = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.authentication.user);
-  // const loggedIn = useSelector((state) => state.authentication.user.logged_in);
-
+  const user = useSelector((state) => state.authentication?.user);
   useEffect(() => {
-    // if (user) {
     dispatch(fetchUser());
-    // }
   }, [dispatch]);
-
-  // console.log(user.user.role);
 
   return (
     <header className="header">

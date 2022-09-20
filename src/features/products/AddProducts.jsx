@@ -1,22 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { postProduct } from './productsSlice';
 import { useNavigate } from 'react-router-dom';
+import './AddProducts.scss';
 
 const AddProducts = () => {
   const dispatch = useDispatch();
 
-  const user = useSelector((state) => state.authentication.user);
+  const userId = useSelector((state) => state.authentication.user?.user.id);
+  const products = useSelector((state) => state.products.products);
+  const productsLoading = useSelector((state) => state.products.loading);
 
-  const [name, setName] = React.useState('');
-  const [price, setPrice] = React.useState();
-  const [quantity, setQuantity] = React.useState();
-  const [image, setImage] = React.useState(null);
+  const [name, setName] = useState('');
+  const [price, setPrice] = useState('');
+  const [quantity, setQuantity] = useState('');
+  const [image, setImage] = useState(null);
+  const [description, setDescription] = useState('');
   const navigate = useNavigate();
 
-  const userId = user.user.id;
-
-  const addProduct = (e) => {
+  const addProduct = async (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append('product[name]', name);
@@ -24,27 +26,29 @@ const AddProducts = () => {
     formData.append('product[quantity]', quantity);
     formData.append('product[user_id]', userId);
     formData.append('product[image]', image);
+    formData.append('product[description]', description);
     dispatch(postProduct(formData));
     setName('');
     setPrice('');
     setQuantity('');
     setImage(null);
-    navigate('/');
   };
 
-  if (!user) {
+  if (!userId) {
     return <h3>You must be logged in to add products</h3>;
   }
 
   return (
     <form onSubmit={addProduct} className="product-form">
-      <h1>Add Products</h1>
+      <h1 className="product-form__title">Add New Product</h1>
+
       <input
         type="text"
         placeholder="Name"
         value={name}
         onChange={(e) => setName(e.target.value)}
         required
+        className="product-form__input"
       />
 
       <input
@@ -53,22 +57,41 @@ const AddProducts = () => {
         value={price}
         onChange={(e) => setPrice(e.target.value)}
         required
+        className="product-form__input"
       />
+
       <input
         type="number"
         placeholder="Quantity"
         value={quantity}
         onChange={(e) => setQuantity(e.target.value)}
         required
+        className="product-form__input"
       />
 
       <input
-        type="file"
-        onChange={(e) => setImage(e.target.files[0])}
+        type="text"
+        placeholder="description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
         required
+        className="product-form__input"
       />
 
-      <button type="submit">add product</button>
+      <div className="file-input">
+        <label>
+          <span>Choose Image</span>
+          <input
+            type="file"
+            onChange={(e) => setImage(e.target.files[0])}
+            required
+            className="file-input__text"
+          />
+        </label>
+      </div>
+      <button type="submit" className="product-form__button">
+        {productsLoading ? 'Loading...' : 'Add'}
+      </button>
     </form>
   );
 };

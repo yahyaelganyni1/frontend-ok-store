@@ -2,12 +2,14 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 
+
 const initialState = {
     products: [],
     product: null,
     loading: false,
     error: null,
 }
+
 
 const url = 'http://localhost:3000/products';
 
@@ -33,7 +35,6 @@ export const postProduct = createAsyncThunk(
         }).catch((error) => {
             console.log(error);
         });
-
         return response.data;
     }
 )
@@ -109,11 +110,11 @@ const productsSlice = createSlice({
 
         [postProduct.pending]: (state, action) => {
             state.loading = true;
-
         },
         [postProduct.fulfilled]: (state, action) => {
             state.loading = false;
-            state.products.push(action.payload);
+            state.products = [...state.products, action.payload];
+
         },
         [deleteProduct.pending]: (state, action) => {
             state.loading = true;

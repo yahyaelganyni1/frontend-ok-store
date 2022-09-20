@@ -8,6 +8,9 @@ import Products from './features/products/Products';
 import AddProducts from './features/products/AddProducts';
 import AllUsers from './features/authentication/AllUsers';
 import SingleProduct from './features/products/SingleProduct';
+import About from './components/about/About';
+
+
 function App() {
 
   return (
@@ -20,6 +23,7 @@ function App() {
         <Route path="/add-products" element={<AddProducts />} />
         <Route path="/all-users" element={<AllUsers />} />
         <Route path="/products/:id" element={<SingleProduct />} />
+        <Route path="/about" element={<About />} />
       </Routes>
     </div>
   );

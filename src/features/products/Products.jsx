@@ -20,17 +20,17 @@ const Products = () => {
 
   return (
     <div className="products">
-      <h3>Products</h3>
+      <h3 className="products__title">Products</h3>
       {productsLoading ? (
-        <p>Loading...</p>
+        <p className="products__loading">Loading...</p>
       ) : (
-        <ul>
+        <ul className="product__list">
           {products.map((product) => (
             <li key={product.id}>
               <Link to={`/products/${product.id}`}>
-                <img src={product.image_path} alt={product.name} width="300" />
+                <img src={product.image_path} alt={product.name} />
                 <h4> {product.name} </h4>
-                <p> {product.price} </p>
+                <p> price {product.price}$ </p>
               </Link>
             </li>
           ))}
