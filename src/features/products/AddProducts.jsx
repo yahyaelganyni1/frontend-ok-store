@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { postProduct } from './productsSlice';
 import { useNavigate } from 'react-router-dom';
+import { getCategories } from '../category/categorySlice';
 import './AddProducts.scss';
 
 const AddProducts = () => {
   const dispatch = useDispatch();
 
-  const userId = useSelector((state) => state.authentication.user?.user.id);
+  const userId = useSelector((state) => state.authentication.user?.id);
   const products = useSelector((state) => state.products.products);
   const productsLoading = useSelector((state) => state.products.loading);
 
@@ -16,7 +17,14 @@ const AddProducts = () => {
   const [quantity, setQuantity] = useState('');
   const [image, setImage] = useState(null);
   const [description, setDescription] = useState('');
+  const [category, setCategory] = useState('');
   const navigate = useNavigate();
+
+  const categories = useSelector((state) => state.categories.categories);
+
+  useEffect(() => {
+    dispatch(getCategories());
+  }, []);
 
   const addProduct = async (e) => {
     e.preventDefault();
@@ -27,10 +35,13 @@ const AddProducts = () => {
     formData.append('product[user_id]', userId);
     formData.append('product[image]', image);
     formData.append('product[description]', description);
+    formData.append('product[category_id]', category);
     dispatch(postProduct(formData));
     setName('');
     setPrice('');
     setQuantity('');
+    setDescription('');
+    setCategory('');
     setImage(null);
   };
 
@@ -77,6 +88,20 @@ const AddProducts = () => {
         required
         className="product-form__input"
       />
+
+      <select
+        value={category}
+        onChange={(e) => setCategory(e.target.value)}
+        required
+        className="product-form__input"
+      >
+        <option value="">Select Category</option>
+        {categories.map((category) => (
+          <option key={category.id} value={category.id}>
+            {category.name}
+          </option>
+        ))}
+      </select>
 
       <div className="file-input">
         <label>

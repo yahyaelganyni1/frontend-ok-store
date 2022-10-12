@@ -9,6 +9,8 @@ import AddProducts from './features/products/AddProducts';
 import AllUsers from './features/authentication/AllUsers';
 import SingleProduct from './features/products/SingleProduct';
 import About from './components/about/About';
+import ShoppingCart from './features/shoppingcart/ShoppingCart';
+import PrivetRoute from './privetRoute/PrivetRoute';
 
 
 function App() {
@@ -18,12 +20,13 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Products />} />
+        <Route path="/products/:id" element={<SingleProduct />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/add-products" element={<AddProducts />} />
         <Route path="/all-users" element={<AllUsers />} />
-        <Route path="/products/:id" element={<SingleProduct />} />
         <Route path="/about" element={<About />} />
+        <Route path='/shopping-cart' element={<ShoppingCart />} />
       </Routes>
     </div>
   );

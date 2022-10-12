@@ -39,12 +39,14 @@ const Header = () => {
           ) : (
             <div>
               <LogOut />
-              <h5 className="username"> welcome {user.user.username}</h5>
-
-              {user.user.role === 'admin' || user.user.role === 'seller' ? (
+              <h5 className="username"> welcome {user.username}</h5>
+              <li>
+                <Link to="/shopping-cart">shopping cart</Link>
+              </li>
+              {user.role === 'admin' || user.role === 'seller' ? (
                 <li>
                   <Link to="/add-products">Add Product</Link>
-                  {user.user.role === 'admin' ? (
+                  {user.role === 'admin' ? (
                     <Link to="/all-users">All Users </Link>
                   ) : null}
                 </li>

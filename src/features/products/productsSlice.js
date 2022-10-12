@@ -27,7 +27,6 @@ export const postProduct = createAsyncThunk(
     async (product) => {
         const token = localStorage.getItem('auth_token');
         const response = await axios.post(url, product, {
-
             headers: {
                 'Authorization': token,
                 'Content-Type': 'application/json'
