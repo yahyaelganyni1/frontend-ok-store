@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { postReview } from '../review/reviewSlice';
 import ReactStars from 'react-rating-stars-component';
 
-const ReviewForm = ({ productId }) => {
+const ReviewForm = ({ productId, setUpdateReview }) => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [error, setError] = useState('');
   const userId = useSelector((state) => state.authentication.user?.id);
   const dispatch = useDispatch();
-  // console.log(userId);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -27,8 +26,10 @@ const ReviewForm = ({ productId }) => {
         },
       }),
     );
+
     setRating(0);
     setComment('');
+    setUpdateReview((state) => !state);
   };
 
   return (
@@ -50,6 +51,7 @@ const ReviewForm = ({ productId }) => {
           id="comment"
           value={comment}
           onChange={(e) => setComment(e.target.value)}
+          required
         />
       </div>
       <div>

@@ -41,6 +41,8 @@ const ShoppingCart = () => {
     setUpdatedCart((prev) => !prev);
   };
 
+  document.title = 'Shopping Cart';
+
   return (
     <div>
       <h1>Shopping Cart</h1>

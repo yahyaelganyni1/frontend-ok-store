@@ -9,9 +9,17 @@ import './header.scss';
 const Header = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.authentication?.user);
+  const userRole = useSelector((state) => state.authentication?.user?.role);
+
+  const loggedIn = user ? true : false;
+
   useEffect(() => {
     dispatch(fetchUser());
-  }, [dispatch]);
+
+    return () => {
+      dispatch(fetchUser());
+    };
+  }, [loggedIn]);
 
   return (
     <header className="header">
@@ -26,34 +34,37 @@ const Header = () => {
           <li>
             <Link to="/contact">Contact</Link>
           </li>
+          {loggedIn && userRole === 'admin' ? (
+            <li>
+              <Link to="/all-users">All Users </Link>
+            </li>
+          ) : null}
 
-          {!user ? (
-            <div>
+          {(loggedIn && userRole === 'admin') || userRole === 'seller' ? (
+            <li>
+              <Link to="/add-products">add new product</Link>
+            </li>
+          ) : null}
+
+          {loggedIn ? (
+            <>
+              <li>
+                <Link to="/shopping-cart">shopping cart</Link>
+              </li>
+
+              <li>
+                <LogOut />
+              </li>
+            </>
+          ) : (
+            <>
               <li>
                 <Link to="/login">Login</Link>
               </li>
               <li>
-                <Link to="/signup">SignUp</Link>
+                <Link to="/signup">Register</Link>
               </li>
-            </div>
-          ) : (
-            <div>
-              <LogOut />
-              <h5 className="username"> welcome {user.username}</h5>
-              <li>
-                <Link to="/shopping-cart">shopping cart</Link>
-              </li>
-              {user.role === 'admin' || user.role === 'seller' ? (
-                <li>
-                  <Link to="/add-products">Add Product</Link>
-                  {user.role === 'admin' ? (
-                    <Link to="/all-users">All Users </Link>
-                  ) : null}
-                </li>
-              ) : (
-                <h5>you are a user</h5>
-              )}
-            </div>
+            </>
           )}
         </ul>
       </nav>

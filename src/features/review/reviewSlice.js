@@ -9,6 +9,7 @@ const initialState = {
     loading: false,
     error: null,
     averageRating: 0,
+    review: {},
 }
 
 export const getProductReviews = createAsyncThunk(
@@ -31,7 +32,6 @@ export const postReview = createAsyncThunk(
         });
         console.log(response.data);
         return response.data;
-
     }
 )
 
@@ -88,7 +88,7 @@ export const reviewSlice = createSlice({
         },
         [postReview.fulfilled]: (state, action) => {
             state.loading = false;
-            state.reviews = action.payload;
+            state.review = action.payload;
         },
         [postReview.rejected]: (state, action) => {
             state.loading = false;
@@ -100,7 +100,8 @@ export const reviewSlice = createSlice({
         },
         [deleteReview.fulfilled]: (state, action) => {
             state.loading = false;
-            state.reviews = action.payload;
+            // state.review = state.review.filter((review) => review.id !== action.payload);
+            state.review = action.payload;
         },
         [deleteReview.rejected]: (state, action) => {
             state.loading = false;

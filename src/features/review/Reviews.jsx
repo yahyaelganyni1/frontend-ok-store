@@ -1,30 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import ReactStars from 'react-rating-stars-component';
-import {
-  getProductReviews,
-  deleteReview,
-  updateReview,
-} from '../review/reviewSlice';
-import ReviewForm from './ReviewForm';
+import { deleteReview } from '../review/reviewSlice';
 
-const Reviews = ({ productId, userId }) => {
+const Reviews = ({ userId, setUpdateReview, reviews }) => {
   const dispatch = useDispatch();
-  const reviews = useSelector((state) => state.reviews.reviews?.reviews);
+  // const reviews = useSelector((state) => state.reviews.reviews?.reviews);
   const reviewsLoading = useSelector((state) => state.reviews.loading);
   const reviewsError = useSelector((state) => state.reviews.error);
-  const [editReview, setEditReview] = useState(false);
-  useEffect(() => {
-    dispatch(getProductReviews(productId));
-  }, [editReview]);
 
   const handleDelete = (reviewId) => {
     dispatch(deleteReview(reviewId));
-    setEditReview((state) => !state);
-  };
-
-  const handleUpdate = () => {
-    return <ReviewForm productId={productId} />;
+    setUpdateReview((state) => !state);
   };
 
   return (

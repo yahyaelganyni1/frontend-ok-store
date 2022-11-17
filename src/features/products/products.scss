@@ -15,7 +15,19 @@
     font-size: 24px;
     font-weight: 600;
   }
-  .product__list {
+  margin-right: 20px;
+  // style the list of options
+
+  .products_category_select {
+    width: 20%;
+    height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 0 10px;
+    margin-bottom: 20px;
+  }
+
+  .products__item {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     grid-gap: 20px;

@@ -45,6 +45,8 @@ const AddProducts = () => {
     setImage(null);
   };
 
+  document.title = 'Add new product';
+
   if (!userId) {
     return <h3>You must be logged in to add products</h3>;
   }

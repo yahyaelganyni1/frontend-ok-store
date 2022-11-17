@@ -11,11 +11,19 @@ const Products = () => {
   const productsError = useSelector((state) => state.products.error);
   const categories = useSelector((state) => state.categories.categories);
 
+  const [category, setCategory] = useState('all');
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchProducts());
     dispatch(getCategories());
-  }, [dispatch]);
+  }, []);
+
+  const handleCategoryChange = (e) => {
+    setCategory(e.target.value);
+  };
+
+  document.title = 'Products';
 
   if (products.length === 0) {
     return <h3>theres no products</h3>;
@@ -24,23 +32,53 @@ const Products = () => {
   return (
     <div className="products">
       <h3 className="products__title">Products</h3>
-      <ul className="product__list">
-        {products.map((product) => (
-          <li key={product.id}>
-            <Link to={`/products/${product.id}`}>
-              <img src={product.image_path} alt={product.name} />
-              <h4> {product.name} </h4>
-              <p> price {product.price}$ </p>
-              {categories.map((category) => {
-                if (category.id === product.category_id) {
-                  return <p> {category.name} </p>;
-                }
-              })}
-            </Link>
-          </li>
-        ))}
+      <div className="products__filter">
+        <select
+          name="category"
+          id="category"
+          value={category}
+          onChange={handleCategoryChange}
+          className="products_category_select"
+        >
+          <option
+            value="all"
+            className="products__filter__select__options__option"
+          >
+            all categories
+          </option>
+          {categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      <ul className="products__item">
+        {productsLoading ? (
+          <p>Loading...</p>
+        ) : (
+          products
+            .filter((product) => {
+              if (category === 'all') {
+                return true;
+              } else {
+                return product.category_id === parseInt(category);
+              }
+            })
+            .map((product) => (
+              <li key={product.id}>
+                <Link to={`/products/${product.id}`}>
+                  <img
+                    src={product.image_path}
+                    alt={product.name}
+                    width="300"
+                  />
+                  <h4>{product.name}</h4>
+                </Link>
+              </li>
+            ))
+        )}
       </ul>
-      {productsError && <p>{productsError}</p>}
     </div>
   );
 };

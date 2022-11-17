@@ -5,6 +5,9 @@ const initialState = {
     user: null,
     status: '',
     allUsers: [],
+    error: null,
+    searchResults: [],
+    loading: false,
 };
 
 
@@ -112,6 +115,18 @@ export const downgradeSellerToUser = createAsyncThunk(
     }
 )
 
+const searchUserApi = 'http://localhost:3000/search'
+
+export const searchUser = createAsyncThunk(
+    'authentication/searchUser',
+    async (search) => {
+        const auth_token = localStorage.getItem('auth_token');
+        const response = await axios.get(`${searchUserApi}/${search}`)
+        console.log(response.data);
+        return response.data;
+    }
+)
+
 
 
 
@@ -150,12 +165,12 @@ const authenticationSlice = createSlice({
             // state.isLoggedIn = action.payload;
         },
         [fetchUser.pending]: (state, action) => {
-            state.status = 'loading';
+            state.loading = true;
         },
         [fetchUser.fulfilled]: (state, action) => {
             state.status = 'idle';
+            state.loading = false;
             state.user = action.payload;
-            // state.isLoggedIn = action.payload.logged_in;
         },
         [getAllUsers.pending]: (state, action) => {
             state.status = 'loading';
@@ -163,7 +178,37 @@ const authenticationSlice = createSlice({
         [getAllUsers.fulfilled]: (state, action) => {
             state.status = 'idle';
             state.allUsers = action.payload;
-        }
+        },
+        [upgradeUserToSeller.pending]: (state, action) => {
+            state.status = 'loading';
+        },
+        [upgradeUserToSeller.fulfilled]: (state, action) => {
+            state.status = 'idle';
+            state.allUsers.map(user => {
+                if (user.id === action.payload.id) {
+                    user = action.payload;
+                }
+            })
+        },
+        [downgradeSellerToUser.pending]: (state, action) => {
+            state.status = 'loading';
+        },
+        [downgradeSellerToUser.fulfilled]: (state, action) => {
+            state.status = 'idle';
+            state.allUsers.map(user => {
+                if (user.id === action.payload.id) {
+                    user = action.payload;
+                }
+            })
+        },
+        [searchUser.pending]: (state, action) => {
+            state.status = 'loading';
+        },
+        [searchUser.fulfilled]: (state, action) => {
+            state.status = 'idle';
+            state.searchResults = action.payload;
+        },
+
     }
 },
     // authenticationSlice.reducer
